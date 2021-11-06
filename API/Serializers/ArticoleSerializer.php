@@ -1,11 +1,11 @@
 
 <?php
-  require_once('../Models/PlanuriLunareModel.php');
+  require_once('../Models/ArticoleModel.php');
   
-  $general_params = array('id', 'nume_articol', 'categorie', 'de_scris', 'poze_instagram', 'poze_blog', 'termen', 'status', 'luna');
+  $general_params = array('id', 'nume_articol', 'categorie', 'scrie', 'instagram', 'blog', 'termen', 'corectat', 'status');
   
   
-  class PlanuriLunareSerializer {
+  class ArticoleSerializer {
     static function each($conn, $objects) {
       $response = array();
       foreach($objects as $obj) {
@@ -13,12 +13,12 @@
           'id' => $obj->id,
           'nume_articol' => $obj->nume_articol,
           'categorie' => $obj->categorie,
-          'de_scris' => $obj->de_scris,
-          'poze_instagram' => $obj->poze_instagram,
-          'poze_blog' => $obj->poze_blog,
+          'scrie' => $obj->scrie,
+          'instagram' => $obj->instagram,
+          'blog' => $obj->blog,
           'termen' => $obj->termen,
+          'corectat' => $obj->corectat,
           'status' => $obj->status,
-          'luna' => $obj->luna,
         ));
       }
       return $response;
@@ -28,12 +28,12 @@
         'id' => $obj->id,
           'nume_articol' => $obj->nume_articol,
           'categorie' => $obj->categorie,
-          'de_scris' => $obj->de_scris,
-          'poze_instagram' => $obj->poze_instagram,
-          'poze_blog' => $obj->poze_blog,
+          'scrie' => $obj->scrie,
+          'instagram' => $obj->instagram,
+          'blog' => $obj->blog,
           'termen' => $obj->termen,
+          'corectat' => $obj->corectat,
           'status' => $obj->status,
-          'luna' => $obj->luna,
       );
     }
   }

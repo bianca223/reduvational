@@ -1,0 +1,48 @@
+.content-box-parent{
+  background-color: rgb(240, 255, 255);
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+form{
+	padding-bottom: 75px;
+	justify-content: center;
+  display: flex;
+  flex-direction: column;
+	align-items: center;
+}
+
+.title-part{
+  text-align: center;
+  color: black;
+  font-weight: 600;
+  font-size: 20px;
+}
+.input-parts-childs{
+  justify-content: center;
+  margin: 10px;
+  font-size: 20px;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  height: 50px;
+}
+.input-parts-childs select{
+  appearance: none;
+  background-color: white;
+  border: none;
+  padding: 0 1em 0 0;
+  margin: 0;
+  width: 100%;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: inherit;
+  line-height: inherit;
+  outline: none;
+}
+select::-ms-expand {
+  display: none;
+}

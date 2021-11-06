@@ -1,16 +1,16 @@
 
 <?php
   require_once('ControllerLib/ControllerWatch.php');
-  require_once('../Models/PlanuriLunareModel.php');
-  require_once('../Serializers/PlanuriLunareSerializer.php');
+  require_once('../Models/ArticoleModel.php');
+  require_once('../Serializers/ArticoleSerializer.php');
   
-  $accepted_params_post = array('id', 'nume_articol', 'categorie', 'de_scris', 'poze_instagram', 'poze_blog', 'termen', 'status', 'luna');
-  
-  
-  $required_params_post = array('nume_articol', 'categorie', 'de_scris', 'poze_instagram', 'poze_blog', 'termen', 'status', 'luna');
+  $accepted_params_post = array('id', 'nume_articol', 'categorie', 'scrie', 'instagram', 'blog', 'termen', 'corectat', 'status');
   
   
-  $accepted_params_update = array('id', 'nume_articol', 'categorie', 'de_scris', 'poze_instagram', 'poze_blog', 'termen', 'status', 'luna');
+  $required_params_post = array('nume_articol', 'categorie', 'scrie', 'instagram', 'blog', 'termen', 'corectat', 'status');
+  
+  
+  $accepted_params_update = array('id', 'nume_articol', 'categorie', 'scrie', 'instagram', 'blog', 'termen', 'corectat', 'status');
   
   
   $required_params_update = array('id');
@@ -22,10 +22,10 @@
   $required_params_delete = array('id');
   
   
-  $search_params = array('id', 'nume_articol', 'categorie', 'de_scris', 'poze_instagram', 'poze_blog', 'termen', 'status', 'luna');
+  $search_params = array('id', 'nume_articol', 'categorie', 'scrie', 'instagram', 'blog', 'termen', 'corectat', 'status');
   
   
-  class PlanuriLunareController {
+  class ArticoleController {
     public static function get($params) {
       
     $conn = mysqli_connect();
@@ -66,17 +66,17 @@
             "Error" => "Daca 'like' este activ, nu pot fi mai mult de 1 parametru!"
           );
         }
-        $allRecords = generalLike($conn, 'PlanuriLunare', $params, $searchParams);
-        $countRecords = generalLikeCount($conn, 'PlanuriLunare', $params, $searchParams);
+        $allRecords = generalLike($conn, 'Articole', $params, $searchParams);
+        $countRecords = generalLikeCount($conn, 'Articole', $params, $searchParams);
       }
       else  {
-        $allRecords = generalGet($conn, 'PlanuriLunare', $params, $searchParams);
-        $countRecords = generalGetCount($conn, 'PlanuriLunare', $params, $searchParams);
+        $allRecords = generalGet($conn, 'Articole', $params, $searchParams);
+        $countRecords = generalGetCount($conn, 'Articole', $params, $searchParams);
       }
       $maxPages = intval($countRecords / $per_page) + ($countRecords % $per_page != 0);
       mysqli_close($conn);
       return array(
-        "records" => PlanuriLunareSerializer::each($conn, $allRecords),
+        "records" => ArticoleSerializer::each($conn, $allRecords),
         "count" => $countRecords,
         "totalPages" => $maxPages
       );
@@ -87,16 +87,16 @@
   
       mysqli_select_db($conn, "reduvational");
       $conn->autocommit(FALSE);
-      $obj = PlanuriLunare::insert($conn, $params);
+      $obj = Articole::insert($conn, $params);
       if(!$obj) {
         $conn->rollback();
         return array(
-          "Error" => "Nu s-a putut inregistra recordul PlanuriLunare!"
+          "Error" => "Nu s-a putut inregistra recordul Articole!"
         );
       }
       $conn->commit();
       mysqli_close($conn);
-      return PlanuriLunareSerializer::once($conn, $obj);
+      return ArticoleSerializer::once($conn, $obj);
     }
     public static function update($params) {
       
@@ -104,26 +104,26 @@
   
       mysqli_select_db($conn, "reduvational");
       $conn->autocommit(FALSE);
-      $obj = PlanuriLunare::get($conn, array(
+      $obj = Articole::get($conn, array(
         'id' => $params['id']
       ));
       if(!$obj) {
         $conn->rollback();
         $id = $params['id'];
         return array(
-          "Error" => "Nu s-a putut gasi recordul obiectului PlanuriLunare cu id $id!"
+          "Error" => "Nu s-a putut gasi recordul obiectului Articole cu id $id!"
         );
       }
       unset($params['id']);
       if(!$obj->update($conn, $params)) {
         $conn->rollback();
         return array(
-          "Error" => "Nu s-a putut face update la recordul PlanuriLunare!"
+          "Error" => "Nu s-a putut face update la recordul Articole!"
         );
       }
       $conn->commit();
       mysqli_close($conn);
-      return PlanuriLunareSerializer::once($conn, $obj);
+      return ArticoleSerializer::once($conn, $obj);
     }
     public static function delete($params) {
       
@@ -131,25 +131,25 @@
   
       mysqli_select_db($conn, "reduvational");
       $conn->autocommit(FALSE);
-      $obj = PlanuriLunare::get($conn, array(
+      $obj = Articole::get($conn, array(
         'id' => $params['id']
       ));
       if(!$obj) {
         $conn->rollback();
         $id = $params['id'];
         return array(
-          "Error" => "Nu s-a putut gasi recordul obiectului PlanuriLunare cu id $id!"
+          "Error" => "Nu s-a putut gasi recordul obiectului Articole cu id $id!"
         );
       }
       if(!$obj->delete($conn, $params)) {
         $conn->rollback();
         return array(
-          "Error" => "Nu s-a putut sterge recordul PlanuriLunare!"
+          "Error" => "Nu s-a putut sterge recordul Articole!"
         );
       }
       $conn->commit();
       mysqli_close($conn);
-      return PlanuriLunareSerializer::once($conn, $obj);
+      return ArticoleSerializer::once($conn, $obj);
     }
   }
   if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -160,7 +160,7 @@
         $params[$key] = $value;
       }
     }
-    echo json_encode(PlanuriLunareController::get($params));
+    echo json_encode(ArticoleController::get($params));
     return ;
   }
   if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -182,7 +182,7 @@
         ));
         return ;
       }
-      $response = PlanuriLunareController::update($params);
+      $response = ArticoleController::update($params);
       if(array_key_exists("Error", $response)) {
         http_response_code(400);
         echo json_encode($response);
@@ -207,7 +207,7 @@
       ));
       return ;
     }
-    $response = PlanuriLunareController::post($params);
+    $response = ArticoleController::post($params);
     if(array_key_exists("Error", $response)) {
       http_response_code(400);
       echo json_encode($response);
@@ -234,7 +234,7 @@
       ));
       return ;
     }
-    $response = PlanuriLunareController::delete($params);
+    $response = ArticoleController::delete($params);
     if(array_key_exists("Error", $response)) {
       http_response_code(400);
       echo json_encode($response);
