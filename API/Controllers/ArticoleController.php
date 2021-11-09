@@ -2,8 +2,9 @@
 <?php
   require_once('ControllerLib/ControllerWatch.php');
   require_once('../Models/ArticoleModel.php');
+  require_once('../Models/MembriModel.php');
   require_once('../Serializers/ArticoleSerializer.php');
-  
+
   $accepted_params_post = array('id', 'nume_articol', 'categorie', 'scrie', 'instagram', 'blog', 'termen', 'corectat', 'status');
   
   
@@ -27,76 +28,55 @@
   
   class ArticoleController {
     public static function get($params) {
-      
-    $conn = mysqli_connect();
+      $servername = "localhost";
+      $username = "root";
+      $password = "12345678";
+      $conn = new mysqli($servername, $username, $password);  
+      //$conn = mysqli_connect();
   
       mysqli_select_db($conn, "reduvational");
-      $page = 1;
-      $per_page = 20;
-      $orderBy = 'id';
-      $orderType = 'ASC';
-      $n_page = getCurrentUrlValue('page');
-      $n_per_page = getCurrentUrlValue('per_page');
-      if($n_page && is_numeric($page)) {
-        $page = $n_page;
-      }
-      if($n_per_page && is_numeric($per_page)) {
-        $per_page = $n_per_page;
-      }
-      $countRecords = 0;
-      $isLike = getCurrentUrlValue('like');
-      $newOrderBy = getCurrentUrlValue('orderBy');
-      $newOrderType = getCurrentUrlValue('orderType');
-      if($newOrderBy) {
-        $orderBy = $newOrderBy;
-      }
-      if($newOrderType) {
-        $orderType = $newOrderType;
-      }
-      $allRecords = array();
-      $searchParams = array(
-        "page" => $page,
-        "per_page" => $per_page,
-        "orderBy" => $orderBy,
-        "orderType" => $orderType
-      );
-      if($isLike && ($isLike === "true" || $isLike === true)) {
-        if(count($params) !== 1) {
-          return array(
-            "Error" => "Daca 'like' este activ, nu pot fi mai mult de 1 parametru!"
-          );
-        }
-        $allRecords = generalLike($conn, 'Articole', $params, $searchParams);
-        $countRecords = generalLikeCount($conn, 'Articole', $params, $searchParams);
-      }
-      else  {
-        $allRecords = generalGet($conn, 'Articole', $params, $searchParams);
-        $countRecords = generalGetCount($conn, 'Articole', $params, $searchParams);
-      }
-      $maxPages = intval($countRecords / $per_page) + ($countRecords % $per_page != 0);
+      $obj = Articole::where($conn, array(
+        "status" => $params
+      ))->fetch();
       mysqli_close($conn);
-      return array(
-        "records" => ArticoleSerializer::each($conn, $allRecords),
-        "count" => $countRecords,
-        "totalPages" => $maxPages
-      );
+      return ArticoleSerializer::each($conn,$obj);
     }
     public static function post($params) {
-      
-    $conn = mysqli_connect();
-  
+      $servername = "localhost";
+      $username = "root";
+      $password = "12345678";
+      $conn = new mysqli($servername, $username, $password);
+      //$conn = mysqli_connect();
       mysqli_select_db($conn, "reduvational");
-      $conn->autocommit(FALSE);
-      $obj = Articole::insert($conn, $params);
-      if(!$obj) {
-        $conn->rollback();
-        return array(
-          "Error" => "Nu s-a putut inregistra recordul Articole!"
-        );
+      
+      $conn->autocommit(false);
+      if($params && count($params) === 7){
+        
+        $membri = imap(Membri::all($conn)->fetch(),"numele");
+        $obj = Articole::insert($conn, array(
+          "nume_articol" => $params['nume_articol'],
+          "categorie" => $params['categorie'],
+          'scrie' => $membri[$params['scrie']]->id,
+          'instagram' =>  $membri[$params['instagram']]->id,
+          'blog' =>  $membri[$params['blog']]->id,
+          'corectat' => $membri[$params['corectat']]->id,
+          'termen' => $params['termen'],
+          "status" => "trimis"
+        ));
+        if(!$obj) {
+          $conn->rollback();
+          return array(
+            "Error" => "Nu s-a putut inregistra recordul Articole!"
+          );
+        }
+        $conn->commit();
+        mysqli_close($conn);
+        return ArticoleSerializer::once($conn, $obj);
       }
-      $conn->commit();
-      mysqli_close($conn);
-      return ArticoleSerializer::once($conn, $obj);
+      return array(
+        "Error" => "Ai uitat un capm liber"
+      );
+      
     }
     public static function update($params) {
       
@@ -153,36 +133,23 @@
     }
   }
   if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $params = array();
-    foreach($search_params as $key) {
-      $value = getCurrentUrlValue($key);
-      if($value) {
-        $params[$key] = $value;
-      }
+    if(getCurrentUrlValue('status') && getCurrentUrlValue('status') == true) {
+      echo json_encode(ArticoleController::get('status'));
+      return ;
     }
-    echo json_encode(ArticoleController::get($params));
-    return ;
+    if(getCurrentUrlValue('terminat') && getCurrentUrlValue('terminat') == true) {
+      echo json_encode(ArticoleController::get('terminat'));
+      return ;
+    }
+    if(getCurrentUrlValue('postat') && getCurrentUrlValue('postat') == true) {
+      echo json_encode(ArticoleController::get('postat'));
+      return ;
+    }
   }
   if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $params = $_POST;
-    if(getCurrentUrlValue('patch') && getCurrentUrlValue('patch') == true) {
-      $errs = checkAcceptedParams($accepted_params_update, $_POST);
-      if(strlen($errs)) {
-        http_response_code(400);
-        echo json_encode(array(
-          "Error" => $errs
-        ));
-        return ;
-      }
-      $errs = checkRequiredParams($required_params_update, $_POST);
-      if(strlen($errs)) {
-        http_response_code(400);
-        echo json_encode(array(
-          "Error" => $errs
-        ));
-        return ;
-      }
-      $response = ArticoleController::update($params);
+    if(getCurrentUrlValue('adaugare') && getCurrentUrlValue('adaugare') == true) {
+      $response = ArticoleController::post($params);
       if(array_key_exists("Error", $response)) {
         http_response_code(400);
         echo json_encode($response);
@@ -191,30 +158,16 @@
       echo json_encode($response);
       return ;
     }
-    $errs = checkAcceptedParams($accepted_params_post, $_POST);
-    if(strlen($errs)) {
-      http_response_code(400);
-      echo json_encode(array(
-        "Error" => $errs
-      ));
-      return ;
-    }
-    $errs = checkRequiredParams($required_params_post, $_POST);
-    if(strlen($errs)) {
-      http_response_code(400);
-      echo json_encode(array(
-        "Error" => $errs
-      ));
-      return ;
-    }
-    $response = ArticoleController::post($params);
-    if(array_key_exists("Error", $response)) {
-      http_response_code(400);
+    if(getCurrentUrlValue('pregatit') && getCurrentUrlValue('pregatit') == true) {
+      $response = ArticoleController::update($params);
+      if(array_key_exists("Error", $response)) {
+        http_response_code(400);
+        echo json_encode($response);
+        return ;
+      }
       echo json_encode($response);
       return ;
-    }
-    echo json_encode($response);
-    return ;
+    }    
   }
   if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     $params = $_GET;
@@ -243,8 +196,5 @@
     echo json_encode($response);
     return ;
   }
-  http_response_code(401);
-  echo json_encode($error_code);
-  
 ?>
   
