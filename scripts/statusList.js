@@ -2,17 +2,17 @@ function fetchData(element){
   $.ajax({
     type:"GET",
     url: `/API/Controllers/ArticoleController.php?${element}=true`,
-    data: "JSON",
+    dataType: "JSON",
     success: function(response){
       createTable(response);
     },
   });
 }
 function createTable(response){ 
-  if(response["records"].length){ 
+  if(response.length){ 
     const body = document.getElementById('table'); 
-    const serializer = serializeTable(response["records"], { 
-      "id" : "Formular ID", 
+    const serializer = serializeTable(response, { 
+      "id" : "Numarul", 
       "nume_articol" : "Nume Articol", 
       "categorie" : "Categorie", 
       "scrie": "Articol De Scris", 
@@ -33,8 +33,8 @@ function createTable(response){
               </tr> 
             </thead> 
             <tbody> 
-            ${eachRow(serializer[1], response["records"], function(row){ 
-              return `class='pressable-row hover-color' onclick='pressRow("${row['id']}")'`; 
+            ${eachRow(serializer[1], response, function(row){ 
+              return `class='pressable-row hover-color'`; 
             })} 
             </tbody> 
         </div> 
@@ -44,7 +44,7 @@ function createTable(response){
     const body = document.getElementById("table"); 
     if(body){ 
       body.innerHTML = ` 
-      <div class='remark warning text-bold'>Nu este nicio solicitare activa</div> 
+      <div class='remark warning text-bold'>Nu este niciun articol in procesare</div> 
       ` 
     } 
     return; 

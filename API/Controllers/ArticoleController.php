@@ -35,6 +35,9 @@
       //$conn = mysqli_connect();
   
       mysqli_select_db($conn, "reduvational");
+      if($params === 'status'){
+        $params = ['scris', 'instagram', 'blog'];
+      }
       $obj = Articole::where($conn, array(
         "status" => $params
       ))->fetch();
