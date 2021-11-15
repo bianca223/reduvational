@@ -1,10 +1,10 @@
-function fetchData(){ 
+function fetchData(element){ 
   $.ajax({ 
   type: 'GET', 
-  url: 'API/Controllers/MailerController.php', 
+  url: `API/Controllers/ArticoleController.php?${element}=true`, 
   dataType: 'JSON', 
   success: function (response) { 
-      for(let i=0; i < response['records'].length; i++){ 
+      for(let i = 0; i < response['records'].length; i++){ 
         createElementWithFunction(response['records'][i]); 
       } 
     } 
@@ -12,11 +12,11 @@ function fetchData(){
 } 
  
 function createOptionForSelect(){ 
-  const element = document.getElementById('name-user').value; 
+  const element = document.getElementById('createElementToDo').value; 
   if(checkElementForSpace(element) === 1){ 
     $.ajax({ 
       type: 'POST', 
-      url: API/Controllers/MailerController.php, 
+      url: `API/Controllers/ArticoleController.php`, 
       data: { 
         "email": element 
       }, 
@@ -24,7 +24,7 @@ function createOptionForSelect(){
       success: function (response) { 
         Metro.dialog.create({ 
           title: "Succes", 
-          content: <div style="color:rgb(57, 172, 57)"> Emailul a fost adaugata cu success</div>, 
+          content: `<div style="color:rgb(57, 172, 57)"> Emailul a fost adaugata cu success</div>`, 
           actions: [ 
             { 
               caption: "Ok", 
@@ -40,7 +40,7 @@ function createOptionForSelect(){
   } else { 
     Metro.dialog.create({ 
       title: "Eroare", 
-      content: <div style="color:rgb(255,0,0)"> Emailul exista deja</div>, 
+      content: `<div style="color:rgb(255,0,0)"> Emailul exista deja</div>`, 
       actions: [ 
         { 
           caption: "Ok", 
@@ -49,17 +49,11 @@ function createOptionForSelect(){
       ] 
     }) 
   } 
-} 
-function checkElementForSpace(element){ 
-  if(element.search(" ") !== -1){ 
-    return 0; 
-  } 
-  return 1; 
-} 
+}  
 function deleteFunctie(id){ 
   $.ajax({ 
   type: 'DELETE', 
-  url: `API/Controllers/MailerController.php?id=${id}`, 
+  url: `API/Controllers/ArticolController.php?id=${id}`, 
   dataType: 'JSON', 
   success: function (response) { 
       window.location.reload(); 
@@ -67,8 +61,8 @@ function deleteFunctie(id){
   }); 
 } 
 function createElementWithFunction(response){ 
-  let name = <span>${response['email']}</span>; 
-  const body = document.getElementById('enter-nume-user'); 
+  let name = `<span>${response['scris']}</span>`; 
+  const body = document.getElementById('createElementToDo'); 
   const element = createElementFromHTML(` 
     <div class='box-parent'> 
       <div class='box-functie'> 
@@ -79,4 +73,4 @@ function createElementWithFunction(response){
   `) 
   body.appendChild(element); 
 } 
-fetchData();
+fetchData('bianca');

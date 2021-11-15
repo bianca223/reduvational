@@ -36,6 +36,21 @@
           'status' => $obj->status,
       );
     }
+    static function prepare($conn, $objects, $params) {
+      $data = array();
+      foreach($objects as $obj){
+        if($obj->scris == $params){
+          array_push($data["scris"], $obj);
+        }
+        if($obj->instagram == $params){
+          array_push($data["instagram"], $obj);
+        }
+        if($obj->blog == $params){
+          array_push($data["blog"], $obj);
+        }
+      }
+      return $data;
+    }
   }
   
 ?>

@@ -4,7 +4,7 @@
 <html>
   <head>
       <link rel="stylesheet" href="styles/styles-index.css"></link>
-      <script src="scripts/statusTodo.js"></script>
+      <script src="scripts/toDo.js"></script>
   </head>
   <body>
     <div class="container">
