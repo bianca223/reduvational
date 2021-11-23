@@ -67,3 +67,58 @@ select::-ms-expand {
 .table{
   background-color: white;
 }
+
+.box-functie{
+  text-align: center;
+  margin: 20px;
+}
+.childs-box{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.child-box{
+  font-size: 40;
+  font-weight: 700;
+  color: #fff;
+  margin-right: 40px;
+  text-align: center
+}
+.box-functie{ 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  background-color: #86B3D1; 
+  font-size: 16px; 
+  font-weight: 800; 
+  height: 30px; 
+  width: 430px; 
+  color: white; 
+  cursor: pointer; 
+} 
+.box-parent{ 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  margin-bottom: 5px; 
+} 
+.input-type{ 
+  margin: 10px; 
+} 
+.box-delete{ 
+  text-align: center; 
+  background-color: red; 
+  color: white; 
+  height: 30px; 
+  width: 30px; 
+  border: 1px solid rgb(153, 0, 0); 
+  align-items: center; 
+  justify-content: center; 
+  cursor: pointer; 
+  font-size: 18px; 
+  font-weight: 900; 
+  float: right; 
+} 
+.box-delete:hover{ 
+  background-color: rgb(153, 0, 0); 
+}

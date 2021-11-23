@@ -36,21 +36,36 @@
           'status' => $obj->status,
       );
     }
-    static function prepare($conn, $objects, $params) {
+    static function prepare($conn, $objects, $users) {
       $data = array();
       foreach($objects as $obj){
-        if($obj->scris == $params){
-          array_push($data["scris"], $obj);
-        }
-        if($obj->instagram == $params){
-          array_push($data["instagram"], $obj);
-        }
-        if($obj->blog == $params){
-          array_push($data["blog"], $obj);
+        if($obj->status != "terminat" && $obj->status != "postat"){
+          foreach($users as $usr){
+            $check = getJobUsers($obj, $usr->id);
+            if($check){
+              if(!array_key_exists($usr->id, $data)){
+                $data[$usr->id] = array();
+              }
+              array_push($data[$usr->id], array(
+                "nume_articol" => $obj->nume_articol,
+                "job" => $check,
+                "termen" => $obj->termen
+              ));
+            }
+            
+          }
         }
       }
       return $data;
     }
+  }
+  function getJobUsers($obj, $id){
+    foreach($obj as $key => $value){
+      if($value == $id){
+        return $key;
+      }
+    }
+    return 0;
   }
   
 ?>

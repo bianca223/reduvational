@@ -18,8 +18,7 @@
             <button class="navbar-buttons" type="submit" onclick="redirectToPage('/statusArticole.php')">Status Articole</button>
             <button class="navbar-buttons" type="submit" onclick="redirectToPage('/articoleTerminate.php')">Articole Terminate</button>
             <button class="navbar-buttons" type="submit">Challenguri</button>
-            <button class="navbar-buttons" type="submit" onclick="redirectToPage('/toDoBianca.php')">ToDo Bianca</button>
-            <button class="navbar-buttons" type="submit" onclick="redirectToPage('/toDoKinga.php')">ToDo Kinga</button>
+            <button class="navbar-buttons" type="submit" onclick="redirectToPage('/toDo.php')">Dashboard</button>
             <button class="navbar-buttons" type="submit">Redu in cifre</button>
             <button class="navbar-buttons" type="submit" onclick="redirectToPage('/allArticole.php')">Toate Articolele Postate</button>
           </div>  

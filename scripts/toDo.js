@@ -1,13 +1,19 @@
-function fetchData(element){ 
+function fetchData(){ 
   $.ajax({ 
   type: 'GET', 
-  url: `API/Controllers/ArticoleController.php?${element}=true`, 
+  url: `API/Controllers/ArticoleController.php?toDo=true`, 
   dataType: 'JSON', 
   success: function (response) { 
-      for(let i = 0; i < response['records'].length; i++){ 
-        createElementWithFunction(response['records'][i]); 
-      } 
-    } 
+    for(let i=0; i<= response["1"].length; i++){
+      createElementWithFunction(response["1"][i], 'bianca');
+    }
+    for(let i=0; i<= response["2"].length; i++){
+      createElementWithFunction(response["2"], 'kinga');
+    }
+    for(let i=0; i<= response["2"].length; i++){
+      createElementWithFunction(response["3"], 'lavinia');
+    }  
+  }
   }) 
 } 
  
@@ -60,9 +66,9 @@ function deleteFunctie(id){
     } 
   }); 
 } 
-function createElementWithFunction(response){ 
-  let name = `<span>${response['scris']}</span>`; 
-  const body = document.getElementById('createElementToDo'); 
+function createElementWithFunction(response, id){ 
+  let name = `<span>${response['nume_articol']}</span>`; 
+  const body = document.getElementById(id); 
   const element = createElementFromHTML(` 
     <div class='box-parent'> 
       <div class='box-functie'> 
@@ -73,4 +79,4 @@ function createElementWithFunction(response){
   `) 
   body.appendChild(element); 
 } 
-fetchData('bianca');
+fetchData();

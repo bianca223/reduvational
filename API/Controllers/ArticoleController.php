@@ -81,18 +81,17 @@
       );
       
     }
-    public static function getToDo($params){
+    public static function getToDo(){
       $servername = "localhost";
       $username = "root";
       $password = "12345678";
       $conn = new mysqli($servername, $username, $password);
       mysqli_select_db($conn, "reduvational");
       $conn->autocommit(FALSE);
-      $obj = Articole::where($conn, array(
-        'status' => "trimis"
-      ))->fetch();
+      $obj = imap(Articole::all($conn)->fetch(), "status");
+      $users = Membri::all($conn)->fetch();
       $conn->commit();
-      $response = ArticoleSerializer::prepare($conn, $obj, $params);
+      $response = ArticoleSerializer::prepare($conn, $obj, $users);
       mysqli_close($conn);
       return $response;
     }
@@ -163,16 +162,8 @@
       echo json_encode(ArticoleController::get('postat'));
       return ;
     }
-    if(getCurrentUrlValue('bianca') && getCurrentUrlValue('bianca') == true) {
-      echo json_encode(ArticoleController::getToDo("1"));
-      return ;
-    }
-    if(getCurrentUrlValue('kinga') && getCurrentUrlValue('kinga') == true) {
-      echo json_encode(ArticoleController::getToDo("2"));
-      return ;
-    }
-    if(getCurrentUrlValue('lavinia') && getCurrentUrlValue('lavinia') == true) {
-      echo json_encode(ArticoleController::getToDo("3"));
+    if(getCurrentUrlValue('toDo') && getCurrentUrlValue('toDo') == true) {
+      echo json_encode(ArticoleController::getToDo());
       return ;
     }
   }
