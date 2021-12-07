@@ -47,6 +47,7 @@
                 $data[$usr->id] = array();
               }
               array_push($data[$usr->id], array(
+                "id" => $obj->id,
                 "nume_articol" => $obj->nume_articol,
                 "job" => $check,
                 "termen" => $obj->termen
@@ -61,8 +62,13 @@
   }
   function getJobUsers($obj, $id){
     foreach($obj as $key => $value){
-      if($value == $id){
-        return $key;
+      if($key == 'scrie' || $key == 'blog' || $key == 'instagram'){
+        if($key == $obj->status){
+          if($value == $id){
+            return $key;
+          }
+        }
+        
       }
     }
     return 0;

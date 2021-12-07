@@ -4,14 +4,14 @@ function fetchData(){
   url: `API/Controllers/ArticoleController.php?toDo=true`, 
   dataType: 'JSON', 
   success: function (response) { 
-    for(let i=0; i<= response["1"].length; i++){
+    for(let i = 0; i < response["1"].length; i++){
       createElementWithFunction(response["1"][i], 'bianca');
     }
-    for(let i=0; i<= response["2"].length; i++){
-      createElementWithFunction(response["2"], 'kinga');
+    for(let i = 0; i < response["2"].length; i++){
+      createElementWithFunction(response["2"][i], 'kinga');
     }
-    for(let i=0; i<= response["2"].length; i++){
-      createElementWithFunction(response["3"], 'lavinia');
+    for(let i = 0; i < response["3"].length; i++){
+      createElementWithFunction(response["3"][i], 'lavinia');
     }  
   }
   }) 
@@ -58,8 +58,8 @@ function createOptionForSelect(){
 }  
 function deleteFunctie(id){ 
   $.ajax({ 
-  type: 'DELETE', 
-  url: `API/Controllers/ArticolController.php?id=${id}`, 
+  type: 'POST', 
+  url: `API/Controllers/ArticoleController.php?next=true&id=${id}`, 
   dataType: 'JSON', 
   success: function (response) { 
       window.location.reload(); 
@@ -67,11 +67,11 @@ function deleteFunctie(id){
   }); 
 } 
 function createElementWithFunction(response, id){ 
-  let name = `<span>${response['nume_articol']}</span>`; 
+  let name = `<span>${response['nume_articol']} | ${response['job']}</span>`; 
   const body = document.getElementById(id); 
   const element = createElementFromHTML(` 
     <div class='box-parent'> 
-      <div class='box-functie'> 
+      <div class='box-function'> 
         ${name} 
       </div> 
       <div class='box-delete' onclick='deleteFunctie(${response['id']})'>X</div> 

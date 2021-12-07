@@ -35,7 +35,7 @@ function createTable(response){
             </thead> 
             <tbody> 
             ${eachRow(serializer[1], response, function(row){ 
-              return `class='pressable-row hover-color'`; 
+              return `class='pressable-row hover-color' crt='${response['id']}' onclick='pressRow(this)'`; 
             })} 
             </tbody> 
         </div> 
@@ -50,5 +50,9 @@ function createTable(response){
     } 
     return; 
   } 
+}
+function pressRow(element){
+  id = element.getAttribute('crt');
+  redirectToPage(`articoleTerminatExtins.php?id=${id}`);
 } 
 fetchData('terminat');

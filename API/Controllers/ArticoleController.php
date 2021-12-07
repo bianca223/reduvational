@@ -36,7 +36,7 @@
   
       mysqli_select_db($conn, "reduvational");
       if($params === 'status'){
-        $params = ['scris', 'instagram', 'blog'];
+        $params = ['scrie', 'instagram', 'blog'];
       }
       $obj = Articole::where($conn, array(
         "status" => $params
@@ -64,7 +64,7 @@
           'blog' =>  $membri[$params['blog']]->id,
           'corectat' => $membri[$params['corectat']]->id,
           'termen' => $params['termen'],
-          "status" => "trimis"
+          "status" => "scrie"
         ));
         if(!$obj) {
           $conn->rollback();
@@ -88,7 +88,7 @@
       $conn = new mysqli($servername, $username, $password);
       mysqli_select_db($conn, "reduvational");
       $conn->autocommit(FALSE);
-      $obj = imap(Articole::all($conn)->fetch(), "status");
+      $obj = Articole::all($conn)->fetch();
       $users = Membri::all($conn)->fetch();
       $conn->commit();
       $response = ArticoleSerializer::prepare($conn, $obj, $users);
@@ -96,8 +96,10 @@
       return $response;
     }
     public static function update($params) {
-      
-    $conn = mysqli_connect();
+      $servername = "localhost";
+      $username = "root";
+      $password = "12345678";
+      $conn = new mysqli($servername, $username, $password);  
   
       mysqli_select_db($conn, "reduvational");
       $conn->autocommit(FALSE);
@@ -122,6 +124,43 @@
       mysqli_close($conn);
       return ArticoleSerializer::once($conn, $obj);
     }
+    public static function updateStatus($params) {
+      $servername = "localhost";
+      $username = "root";
+      $password = "12345678";
+      $conn = new mysqli($servername, $username, $password);
+        mysqli_select_db($conn, "reduvational");
+        $conn->autocommit(FALSE);
+        $obj = Articole::get($conn, array(
+          'id' => $params['id']
+        ));
+        if(!$obj) {
+          $conn->rollback();
+          $id = $params['id'];
+          return array(
+            "Error" => "Nu s-a putut gasi recordul obiectului Articole cu id $id!"
+          );
+        }
+        $status['status'] = 'terminat';
+        // if($obj->status == 'trimis'){
+        //   $status['status'] = 'scrie';
+        // }
+        if($obj->status == 'scrie'){
+          $status['status']  = 'instagram';
+        }
+        if($obj->status == 'instagram'){
+          $status['status']  = 'blog';
+        }
+        if(!$obj->update($conn, $status)) {
+          $conn->rollback();
+          return array(
+            "Error" => "Nu s-a putut face update la recordul Articole!"
+          );
+        }
+        $conn->commit();
+        mysqli_close($conn);
+        return ArticoleSerializer::once($conn, $obj);
+      }
     public static function delete($params) {
       
     $conn = mysqli_connect();
@@ -188,7 +227,18 @@
       }
       echo json_encode($response);
       return ;
-    }    
+    }   
+    if(getCurrentUrlValue('next') && getCurrentUrlValue('next') == true) {
+      $params['id'] = getCurrentUrlValue('id');
+      $response = ArticoleController::updateStatus($params);
+      if(array_key_exists("Error", $response)) {
+        http_response_code(400);
+        echo json_encode($response);
+        return ;
+      }
+      echo json_encode($response);
+      return ;
+    } 
   }
   if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     $params = $_GET;
