@@ -41,8 +41,9 @@
       $obj = Articole::where($conn, array(
         "status" => $params
       ))->fetch();
+      $response = ArticoleSerializer::each($conn,$obj);
       mysqli_close($conn);
-      return ArticoleSerializer::each($conn,$obj);
+      return $response;
     }
     public static function post($params) {
       $servername = "localhost";
@@ -72,9 +73,10 @@
             "Error" => "Nu s-a putut inregistra recordul Articole!"
           );
         }
+        $response = ArticoleSerializer::once($conn, $obj);
         $conn->commit();
         mysqli_close($conn);
-        return ArticoleSerializer::once($conn, $obj);
+        return $response;
       }
       return array(
         "Error" => "Ai uitat un capm liber"
@@ -120,9 +122,10 @@
           "Error" => "Nu s-a putut face update la recordul Articole!"
         );
       }
+      $response = ArticoleSerializer::once($conn, $obj);
       $conn->commit();
       mysqli_close($conn);
-      return ArticoleSerializer::once($conn, $obj);
+      return $response;
     }
     public static function updateStatus($params) {
       $servername = "localhost";
@@ -157,9 +160,10 @@
             "Error" => "Nu s-a putut face update la recordul Articole!"
           );
         }
+        $response = ArticoleSerializer::once($conn, $obj);
         $conn->commit();
         mysqli_close($conn);
-        return ArticoleSerializer::once($conn, $obj);
+        return $response;
       }
     public static function delete($params) {
       
@@ -240,7 +244,6 @@
       return ;
     }
     if(getCurrentUrlValue('update') && getCurrentUrlValue('update') == true) {
-      echo json_encode($params);
       $response = ArticoleController::update($params);
       if(array_key_exists("Error", $response)) {
         http_response_code(400);

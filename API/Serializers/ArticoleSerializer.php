@@ -1,23 +1,24 @@
 
 <?php
   require_once('../Models/ArticoleModel.php');
+  require_once('../Models/MembriModel.php');
   
-  $general_params = array('id', 'nume_articol', 'categorie', 'scrie', 'instagram', 'blog', 'termen', 'corectat', 'status');
-  
+  $general_params = array('id', 'nume_articol', 'categorie', 'scrie', 'instagram', 'blog', 'termen', 'corectat', 'status', 'data_postare');
   
   class ArticoleSerializer {
     static function each($conn, $objects) {
+      $membrii = imap(Membri::all($conn)->fetch(), "id");
       $response = array();
       foreach($objects as $obj) {
         array_push($response, array(
           'id' => $obj->id,
           'nume_articol' => $obj->nume_articol,
           'categorie' => $obj->categorie,
-          'scrie' => $obj->scrie,
-          'instagram' => $obj->instagram,
-          'blog' => $obj->blog,
+          'scrie' => $membrii[$obj->scrie]->numele,
+          'instagram' => $membrii[$obj->instagram]->numele,
+          'blog' => $membrii[$obj->blog]->numele,
           'termen' => $obj->termen,
-          'corectat' => $obj->corectat,
+          'corectat' => $membrii[$obj->corectat]->numele,
           'status' => $obj->status,
         ));
       }

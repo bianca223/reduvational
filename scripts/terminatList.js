@@ -54,10 +54,16 @@ function pressRow(id){
   redirectToPage(`articoleTerminatExtins.php?id=${id}`);
 } 
 function createPostat(){
-  data = [];
-  data['data_postare'] = document.getElementById('date-time').value;
-  data['id'] = getParamBy(window.location.href,'id');
-  console.log(data)
+  data = {
+    'data_postare' : document.getElementById('date-time').value,
+    'id' : getParamBy(window.location.href,'id'),
+    'status' : 'postat'
+  };
+  // data = {};
+  // data.push('data_postare', document.getElementById('date-time').value);
+  // data.push('id', getParamBy(window.location.href,'id'));
+  // data['data_postare'] = document.getElementById('date-time').value;
+  // data['id'] = getParamBy(window.location.href,'id');
   $.ajax({
     type:"POST",
     url: `/API/Controllers/ArticoleController.php?update=true`,
