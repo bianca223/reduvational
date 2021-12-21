@@ -44,7 +44,7 @@ function createTable(response){
     const body = document.getElementById("table"); 
     if(body){ 
       body.innerHTML = ` 
-      <div class='remark warning text-bold'>Nu este niciun articol postat</div> 
+      <div class='remark warning text-bold'>Nu este niciun articol terminat</div> 
       ` 
     } 
     return; 
@@ -69,8 +69,34 @@ function createPostat(){
     url: `/API/Controllers/ArticoleController.php?update=true`,
     data: data,
     dataType: "JSON",
-    success: function(){
+    success: function(response){
+      Metro.dialog.create({
+        title: "Success",
+        content: `<div style='color:rgb(0, 153, 51)'>Articolul a fost adaugat cu success</div>`,
+        actions: [
+          {
+            caption: "OK",
+            cls:"js-dialog-close alert",
+            onclick: function(){
+              redirectToPage('allArticole.php');
+            }
+          }
+        ]
+      });
     },
+    error:function(response){
+      Metro.dialog.create({
+        title:"Eroare",
+        content: `<div style='color:rgb(179, 0, 0)'>Articolul are urmatoarele erori ${response["Error"]}</div>`,
+        actions:[{
+          caption:"OK",
+          cls:"js-dialog-close-alert",
+          onclick:function(){
+
+          }
+        }]
+      });
+    }
   });
 }
 fetchData('terminat');

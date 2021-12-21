@@ -36,7 +36,7 @@
   
       mysqli_select_db($conn, "reduvational");
       if($params === 'status'){
-        $params = ['scrie', 'instagram', 'blog'];
+        $params = ['scrie', 'instagram', 'blog', 'corectat'];
       }
       $obj = Articole::where($conn, array(
         "status" => $params
@@ -153,6 +153,9 @@
         }
         if($obj->status == 'instagram'){
           $status['status']  = 'blog';
+        }
+        if($obj->status == 'blog'){
+          $status['status'] = 'corectat';
         }
         if(!$obj->update($conn, $status)) {
           $conn->rollback();

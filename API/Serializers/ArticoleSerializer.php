@@ -63,7 +63,7 @@
   }
   function getJobUsers($obj, $id){
     foreach($obj as $key => $value){
-      if($key == 'scrie' || $key == 'blog' || $key == 'instagram'){
+      if($key == 'scrie' || $key == 'blog' || $key == 'instagram' || $key == 'corectat'){
         if($key == $obj->status){
           if($value == $id){
             return $key;
