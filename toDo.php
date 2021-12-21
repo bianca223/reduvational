@@ -14,22 +14,17 @@
         </div>
         <div class="childs-box">
           <div class="child-box">
-            <label>Bianca</label>
             <div class="createElementToDo" id="bianca"></div>
           </div>
           <div class="child-box">
-            <label>Kinga</label>
             <div class="createElementToDo" id="kinga"></div>
           </div>
           <div class="child-box">
-            <label>Lavinia</label>
             <div class="createElementToDo" id="lavinia"></div>
           </div>
           <div class="child-box">
-            <label>Bogdan</label>
             <div class="createElementToDo" id="bogdan"></div>
           </div><div class="child-box">
-            <label>Vivi</label>
             <div class="createElementToDo" id="vivi"></div>
           </div>
         </div>

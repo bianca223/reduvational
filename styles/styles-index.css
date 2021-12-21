@@ -124,3 +124,6 @@ select::-ms-expand {
   display: flex;
   flex-direction: column;
 }
+.table{
+  background-color: #b6bdc2;
+}
