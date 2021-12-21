@@ -25,6 +25,13 @@
             <label>Lavinia</label>
             <div class="createElementToDo" id="lavinia"></div>
           </div>
+          <div class="child-box">
+            <label>Bogdan</label>
+            <div class="createElementToDo" id="bogdan"></div>
+          </div><div class="child-box">
+            <label>Vivi</label>
+            <div class="createElementToDo" id="vivi"></div>
+          </div>
         </div>
       </div>
     </div>

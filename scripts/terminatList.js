@@ -4,7 +4,6 @@ function fetchData(element){
     url: `/API/Controllers/ArticoleController.php?${element}=true`,
     dataType: "JSON",
     success: function(response){
-      console.log(response);
       createTable(response);
     },
   });
@@ -35,7 +34,7 @@ function createTable(response){
             </thead> 
             <tbody> 
             ${eachRow(serializer[1], response, function(row){ 
-              return `class='pressable-row hover-color' crt='${response['id']}' onclick='pressRow(this)'`; 
+              return `class='pressable-row hover-color'onclick='pressRow(${row['id']})'`; 
             })} 
             </tbody> 
         </div> 
@@ -51,8 +50,21 @@ function createTable(response){
     return; 
   } 
 }
-function pressRow(element){
-  id = element.getAttribute('crt');
+function pressRow(id){
   redirectToPage(`articoleTerminatExtins.php?id=${id}`);
 } 
+function createPostat(){
+  data = [];
+  data['data_postare'] = document.getElementById('date-time').value;
+  data['id'] = getParamBy(window.location.href,'id');
+  console.log(data)
+  $.ajax({
+    type:"POST",
+    url: `/API/Controllers/ArticoleController.php?update=true`,
+    data: data,
+    dataType: "JSON",
+    success: function(){
+    },
+  });
+}
 fetchData('terminat');

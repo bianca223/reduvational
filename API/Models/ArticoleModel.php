@@ -3,13 +3,13 @@
   require_once('ActiveRecords/ActiveRecords.php');
   require_once('Extensions/ArticoleExtension.php');
   
-  $accepted_params_post = array('id', 'nume_articol', 'categorie', 'scrie', 'instagram', 'blog', 'termen', 'corectat', 'status');
+  $accepted_params_post = array('id', 'nume_articol', 'categorie', 'scrie', 'instagram', 'blog', 'termen', 'corectat', 'status', 'data_postare');
   
   
-  $required_params_post = array('nume_articol', 'categorie', 'scrie', 'instagram', 'blog', 'termen', 'corectat', 'status');
+  $required_params_post = array('nume_articol', 'categorie', 'scrie', 'instagram', 'blog', 'termen', 'corectat', 'status', 'data_postare');
   
   
-  $accepted_params_update = array('id', 'nume_articol', 'categorie', 'scrie', 'instagram', 'blog', 'termen', 'corectat', 'status');
+  $accepted_params_update = array('id', 'nume_articol', 'categorie', 'scrie', 'instagram', 'blog', 'termen', 'corectat', 'status', 'data_postare');
   
   
   $required_params_update = array('id');
@@ -31,8 +31,9 @@
     public $termen;
     public $corectat;
     public $status;
+    public $data_postare;
     static $valTypes = array(
-      'id' => 'int','nume_articol' => 'varchar','categorie' => 'varchar','scrie' => 'int','instagram' => 'int','blog' => 'int','termen' => 'timestamp','corectat' => 'int','status' => 'varchar'
+      'id' => 'int','nume_articol' => 'varchar','categorie' => 'varchar','scrie' => 'int','instagram' => 'int','blog' => 'int','termen' => 'timestamp','corectat' => 'int','status' => 'varchar','data_postare' => 'timestamp'
     );
   
     public static function get($conn, $params) {
@@ -68,6 +69,9 @@
       }
       if(array_key_exists("status", $response)) {
         $self->status = $response['status'];
+      }
+      if(array_key_exists("data_postare", $response)) {
+        $self->data_postare = $response['data_postare'];
       }
       return $self;
     }  
@@ -115,6 +119,9 @@
       }
       if(array_key_exists("status", $records[$i])) {
         $self->status = $records[$i]['status'];
+      }
+      if(array_key_exists("data_postare", $records[$i])) {
+        $self->data_postare = $records[$i]['data_postare'];
       }
         array_push($result, $self);
       }
@@ -200,6 +207,9 @@
       if(array_key_exists("status", $new)) {
         $this->status = $new['status'];
       }
+      if(array_key_exists("data_postare", $new)) {
+        $this->data_postare = $new['data_postare'];
+      }
       return 1;
     } 
 
@@ -250,6 +260,9 @@
       if(array_key_exists("status", $current)) {
         $this->status = $current['status'];
       }
+      if(array_key_exists("data_postare", $current)) {
+        $this->data_postare = $current['data_postare'];
+      }
       $response = deleteRecordBy($conn, "reduvational", "articole", "id", $current["id"]);
       return $response[0];
     } 
@@ -286,6 +299,9 @@
       }
       if(array_key_exists("status", $params)) {
         $self->status = $params['status'];
+      }
+      if(array_key_exists("data_postare", $params)) {
+        $self->data_postare = $params['data_postare'];
       }
       return $self;
     }

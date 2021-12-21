@@ -5,13 +5,13 @@
   require_once('../Models/MembriModel.php');
   require_once('../Serializers/ArticoleSerializer.php');
 
-  $accepted_params_post = array('id', 'nume_articol', 'categorie', 'scrie', 'instagram', 'blog', 'termen', 'corectat', 'status');
+  $accepted_params_post = array('id', 'nume_articol', 'categorie', 'scrie', 'instagram', 'blog', 'termen', 'corectat', 'status', 'data_postare');
   
   
-  $required_params_post = array('nume_articol', 'categorie', 'scrie', 'instagram', 'blog', 'termen', 'corectat', 'status');
+  $required_params_post = array('nume_articol', 'categorie', 'scrie', 'instagram', 'blog', 'termen', 'corectat', 'status', 'data_postare');
   
   
-  $accepted_params_update = array('id', 'nume_articol', 'categorie', 'scrie', 'instagram', 'blog', 'termen', 'corectat', 'status');
+  $accepted_params_update = array('id', 'nume_articol', 'categorie', 'scrie', 'instagram', 'blog', 'termen', 'corectat', 'status', 'data_postare');
   
   
   $required_params_update = array('id');
@@ -23,7 +23,7 @@
   $required_params_delete = array('id');
   
   
-  $search_params = array('id', 'nume_articol', 'categorie', 'scrie', 'instagram', 'blog', 'termen', 'corectat', 'status');
+  $search_params = array('id', 'nume_articol', 'categorie', 'scrie', 'instagram', 'blog', 'termen', 'corectat', 'status', 'data_postare');
   
   
   class ArticoleController {
@@ -231,6 +231,17 @@
     if(getCurrentUrlValue('next') && getCurrentUrlValue('next') == true) {
       $params['id'] = getCurrentUrlValue('id');
       $response = ArticoleController::updateStatus($params);
+      if(array_key_exists("Error", $response)) {
+        http_response_code(400);
+        echo json_encode($response);
+        return ;
+      }
+      echo json_encode($response);
+      return ;
+    }
+    if(getCurrentUrlValue('update') && getCurrentUrlValue('update') == true) {
+      echo json_encode($params);
+      $response = ArticoleController::update($params);
       if(array_key_exists("Error", $response)) {
         http_response_code(400);
         echo json_encode($response);

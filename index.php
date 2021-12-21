@@ -39,6 +39,7 @@
                             <option value="bianca">Bianca</option>
                             <option value="kinga">Kinga</option>
                             <option value="lavinia">Lavinia</option>
+                            <option value="vivi">Vivi</option>
                         </select>
                     </div>
                     <div class="input-parts-childs">
@@ -48,6 +49,7 @@
                             <option value="bianca">Bianca</option>
                             <option value="kinga">Kinga</option>
                             <option value="lavinia">Lavinia</option>
+                            <option value="vivi">Vivi</option>
                         </select>
                     </div>
                     <div class="input-parts-childs">
