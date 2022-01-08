@@ -57,46 +57,6 @@ function fetchData(){
   }
   }) 
 } 
- 
-function createOptionForSelect(){ 
-  const element = document.getElementById('createElementToDo').value; 
-  if(checkElementForSpace(element) === 1){ 
-    $.ajax({ 
-      type: 'POST', 
-      url: `API/Controllers/ArticoleController.php`, 
-      data: { 
-        "email": element 
-      }, 
-      dataType: 'JSON', 
-      success: function (response) { 
-        Metro.dialog.create({ 
-          title: "Succes", 
-          content: `<div style="color:rgb(57, 172, 57)"> Emailul a fost adaugata cu success</div>`, 
-          actions: [ 
-            { 
-              caption: "Ok", 
-              cls: "js-dialog-close alert", 
-              onclick:function(){ 
-                window.location.reload(); 
-              } 
-            } 
-          ] 
-        }) 
-      } 
-    }) 
-  } else { 
-    Metro.dialog.create({ 
-      title: "Eroare", 
-      content: `<div style="color:rgb(255,0,0)"> Emailul exista deja</div>`, 
-      actions: [ 
-        { 
-          caption: "Ok", 
-          cls: "js-dialog-close alert", 
-        } 
-      ] 
-    }) 
-  } 
-}  
 function deleteFunctie(id){ 
   $.ajax({ 
   type: 'POST', 
@@ -108,7 +68,7 @@ function deleteFunctie(id){
   }); 
 } 
 function createElementWithFunction(response, id){ 
-  let name = `<span>${response['nume_articol']} | ${response['job']}</span>`; 
+  let name = `<span>${response['nume_articol']}|${response['job']}</span>|${response['termen']}`; 
   const body = document.getElementById(id); 
   const element = createElementFromHTML(` 
     <div class='box-parent'> 

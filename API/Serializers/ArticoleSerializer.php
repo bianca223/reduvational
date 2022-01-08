@@ -47,11 +47,14 @@
               if(!array_key_exists($usr->id, $data)){
                 $data[$usr->id] = array();
               }
+              $diff = strtotime($obj->termen) - time();
+              $days=floor($diff/(60*60*24));
+              $hours=round(($diff-$days*60*60*24)/(60*60));
               array_push($data[$usr->id], array(
                 "id" => $obj->id,
                 "nume_articol" => $obj->nume_articol,
                 "job" => $check,
-                "termen" => $obj->termen
+                "termen" => "day: $days, ore: $hours"
               ));
             }
             
